@@ -1,0 +1,316 @@
+---
+swagger: "2.0"
+info:
+  description: "Test_Api"
+  version: "1.0.0"
+  title: "Swagger Petstore"
+host: "localhost:8080"
+basePath: "/v1"
+tags:
+- name: "user"
+  description: "All Api's for users"
+- name: "post"
+  description: "All Api's for specific post"
+- name: "view"
+  description: "All Api's for populating the home screen"
+schemes:
+- "http"
+paths:
+  /latest:
+    get:
+      tags:
+      - "view"
+      summary: "API to get the latest 10 post of whole network"
+      parameters:
+      - name: "offset"
+        in: "query"
+        required: true
+        type: "integer"
+        x-exportParamName: "Offset"
+      - name: "apikey"
+        in: "query"
+        required: true
+        type: "string"
+        x-exportParamName: "Apikey"
+      responses:
+        200:
+          description: "Response of requesting my posts"
+          schema:
+            $ref: "#/definitions/Posts"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /user/login:
+    post:
+      tags:
+      - "user"
+      summary: "API for login."
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "The user to create."
+        required: false
+        schema:
+          $ref: "#/definitions/User"
+        x-exportParamName: "User"
+      responses:
+        200:
+          description: "Response on adding Bank"
+          schema:
+            type: "string"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /user/create:
+    post:
+      tags:
+      - "user"
+      summary: "API to create a new user"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "The user to create."
+        required: false
+        schema:
+          $ref: "#/definitions/User"
+        x-exportParamName: "User"
+      responses:
+        200:
+          description: "Response on adding Bank"
+          schema:
+            type: "string"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /user/myposts:
+    get:
+      tags:
+      - "user"
+      summary: "API to see users own posts"
+      parameters:
+      - name: "offset"
+        in: "query"
+        required: true
+        type: "integer"
+        x-exportParamName: "Offset"
+      - name: "apikey"
+        in: "query"
+        required: true
+        type: "string"
+        x-exportParamName: "Apikey"
+      responses:
+        200:
+          description: "Response of requesting my posts"
+          schema:
+            $ref: "#/definitions/Posts"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /user/logout:
+    get:
+      tags:
+      - "user"
+      summary: "API to log out"
+      parameters:
+      - name: "apikey"
+        in: "query"
+        required: true
+        type: "string"
+        x-exportParamName: "Apikey"
+      responses:
+        200:
+          description: "Response on logging out"
+          schema:
+            type: "string"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /post/like:
+    post:
+      tags:
+      - "post"
+      summary: "Like a post"
+      description: "API to like a post"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "likepost"
+        description: "To like a post."
+        required: false
+        schema:
+          $ref: "#/definitions/PostInput"
+        x-exportParamName: "Likepost"
+      responses:
+        200:
+          description: "Response on liking a post"
+          schema:
+            type: "string"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /post/dislike:
+    post:
+      tags:
+      - "post"
+      summary: "Dislike a Post"
+      description: "API to dislike a post"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "dislikepost"
+        description: "To dislike a post"
+        required: false
+        schema:
+          $ref: "#/definitions/PostInput"
+        x-exportParamName: "Dislikepost"
+      responses:
+        200:
+          description: "Response on disliking a post"
+          schema:
+            type: "string"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+  /post/comment:
+    post:
+      tags:
+      - "post"
+      summary: "Comment on a post"
+      description: "Api to comment on a post"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "post_a_comment"
+        description: "To comment on post"
+        required: false
+        schema:
+          $ref: "#/definitions/CommentInput"
+        x-exportParamName: "PostAComment"
+      responses:
+        200:
+          description: "Response on posting a comment"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  PostInput:
+    type: "object"
+    required:
+    - "_id"
+    - "apikey"
+    properties:
+      apikey:
+        type: "string"
+      _id:
+        type: "string"
+    example:
+      apikey: "apikey"
+      _id: "_id"
+  CommentInput:
+    type: "object"
+    required:
+    - "apikey"
+    - "comment"
+    properties:
+      apikey:
+        type: "string"
+      _id:
+        type: "string"
+      comment:
+        type: "string"
+    example:
+      apikey: "apikey"
+      comment: "comment"
+      _id: "_id"
+  Comments:
+    type: "object"
+    required:
+    - "comment"
+    - "user"
+    properties:
+      user:
+        type: "string"
+      comment:
+        type: "string"
+    example:
+      comment: "comment"
+      user: "user"
+  Posts:
+    type: "object"
+    required:
+    - "_id"
+    - "comments"
+    - "content"
+    - "dislikes"
+    - "imageURL"
+    - "likes"
+    - "user"
+    properties:
+      _id:
+        type: "string"
+      user:
+        type: "string"
+      imageURL:
+        type: "string"
+      content:
+        type: "string"
+      likes:
+        type: "integer"
+      dislikes:
+        type: "integer"
+      comments:
+        type: "array"
+        items:
+          $ref: "#/definitions/Comments"
+    example:
+      comments:
+      - comment: "comment"
+        user: "user"
+      - comment: "comment"
+        user: "user"
+      imageURL: "imageURL"
+      dislikes: 6
+      _id: "_id"
+      user: "user"
+      content: "content"
+      likes: 0
+  User:
+    type: "object"
+    required:
+    - "password"
+    - "user"
+    properties:
+      user:
+        type: "string"
+      password:
+        type: "string"
+    example:
+      password: "password"
+      user: "user"
+  Error:
+    type: "object"
+    required:
+    - "code"
+    - "message"
+    properties:
+      code:
+        type: "integer"
+      message:
+        type: "string"
+      additional:
+        type: "string"
